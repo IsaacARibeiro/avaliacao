@@ -1,4 +1,3 @@
-
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +6,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script>
         function atualizarAvaliacao() {
+            const pesosFonte = { "sim": 2, "nao": 0, "alta": 2, "media": 1, "baixa": 0 };
+            const pesosConteudo = { "alta": 2, "media": 1, "baixa": 0 };
+            
             let autenticidade = document.querySelector('select[name="autenticidade"]').value;
             let confianca = document.querySelector('select[name="confianca"]').value;
             let competencia = document.querySelector('select[name="competencia"]').value;
@@ -14,33 +16,41 @@
             let compatibilidade = document.querySelector('select[name="compatibilidade"]').value;
             let semelhanca = document.querySelector('select[name="semelhanca"]').value;
             
+            let pontuacaoFonte = pesosFonte[autenticidade] + pesosFonte[confianca] + pesosFonte[competencia];
             let classificacaoFonte = "F - Não avaliada";
             let motivoFonte = "Não foi possível avaliar a idoneidade da fonte com os dados fornecidos.";
             
-            if (autenticidade === "sim" && confianca === "alta" && competencia === "alta") {
+            if (pontuacaoFonte >= 5) {
                 classificacaoFonte = "A - Inteiramente idônea";
                 motivoFonte = "A fonte foi considerada autêntica, altamente confiável e competente.";
-            } else if (autenticidade === "sim" && confianca === "media") {
+            } else if (pontuacaoFonte === 4) {
                 classificacaoFonte = "B - Normalmente idônea";
-                motivoFonte = "A fonte é autêntica e possui uma confiança média.";
-            } else if (autenticidade === "sim" && confianca === "baixa") {
+                motivoFonte = "A fonte é autêntica e possui um nível médio de confiança e competência.";
+            } else if (pontuacaoFonte === 3) {
                 classificacaoFonte = "C - Regularmente idônea";
-                motivoFonte = "A fonte é autêntica, mas possui baixa confiança.";
-            } else if (autenticidade === "nao") {
+                motivoFonte = "A fonte é autêntica, mas apresenta limitações na confiabilidade e competência.";
+            } else if (pontuacaoFonte <= 2) {
                 classificacaoFonte = "E - Inidônea";
-                motivoFonte = "A fonte não pôde ser autenticada, tornando-a inidônea.";
+                motivoFonte = "A fonte não pôde ser autenticada ou apresenta pouca confiabilidade.";
             }
             
+            let pontuacaoConteudo = pesosConteudo[coerencia] + pesosConteudo[compatibilidade] + pesosConteudo[semelhanca];
             let classificacaoConteudo = "6 - Não avaliado";
             let motivoConteudo = "Não há informações suficientes para avaliar o conteúdo.";
             
-            if (coerencia === "alta" && compatibilidade === "alta" && semelhanca === "alta") {
+            if (pontuacaoConteudo >= 5) {
                 classificacaoConteudo = "1 - Confirmado por outras fontes";
                 motivoConteudo = "O conteúdo foi coerente, compatível e corroborado por outras fontes.";
-            } else if (coerencia === "media" && compatibilidade === "media") {
+            } else if (pontuacaoConteudo === 4) {
                 classificacaoConteudo = "2 - Provavelmente verdadeiro";
                 motivoConteudo = "O conteúdo apresenta coerência e compatibilidade, mas sem total confirmação.";
-            } else if (coerencia === "baixa") {
+            } else if (pontuacaoConteudo === 3) {
+                classificacaoConteudo = "3 - Possivelmente verdadeiro";
+                motivoConteudo = "O conteúdo faz sentido, mas carece de mais fontes confirmatórias.";
+            } else if (pontuacaoConteudo === 2) {
+                classificacaoConteudo = "4 - Duvidoso";
+                motivoConteudo = "O conteúdo apresenta algumas inconsistências e poucas confirmações.";
+            } else if (pontuacaoConteudo <= 1) {
                 classificacaoConteudo = "5 - Improvável";
                 motivoConteudo = "O conteúdo apresenta baixa coerência, tornando sua veracidade improvável.";
             }
@@ -84,7 +94,6 @@
                         <option value="baixa">Baixa - A fonte não tem experiência ou conhecimento suficiente.</option>
                     </select>
                 </div>
-                
                 <h3>Avaliação do Conteúdo</h3>
                 <div class="mb-3">
                     <label class="form-label">Coerência do conteúdo:</label>
