@@ -54,6 +54,15 @@
                 classificacaoConteudo = "5 - Improvável";
                 motivoConteudo = "O conteúdo apresenta baixa coerência, tornando sua veracidade improvável.";
             }
+             //COLOCAR CORES
+            let resultadoFinal = classificacaoFonte.charAt(0) + classificacaoConteudo.charAt(0);
+            let cor = "#ff4d4d"; // Vermelho (menos confiável)
+            
+            if (resultadoFinal === "A1" || resultadoFinal === "A2" || resultadoFinal === "B1") {
+                cor = "#4caf50"; // Verde (mais confiável)
+            } else if (resultadoFinal === "B2" || resultadoFinal === "C1" || resultadoFinal === "C2") {
+                cor = "#ffeb3b"; // Amarelo (médio)
+            }
             
             document.getElementById("resultado").innerHTML = `
                 <h3 class="text-center">Resultado da Avaliação</h3>
@@ -61,6 +70,9 @@
                 <p>${motivoFonte}</p>
                 <p><strong>Classificação do Conteúdo:</strong> ${classificacaoConteudo}</p>
                 <p>${motivoConteudo}</p>
+                 <div class="mt-4 p-3 text-center" style="background-color: ${cor}; border-radius: 8px;">
+                    <h2 class="fw-bold">${resultadoFinal}</h2>
+                </div>
             `;
         }
     </script>
